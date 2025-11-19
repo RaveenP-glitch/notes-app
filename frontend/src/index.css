@@ -13,4 +13,12 @@
 }
 
 @layer components {
+
+    .input-box {
+        @apply w-full text-sm bg-transparent border-[1.5px] px-5 py-3 border border-gray-300 rounded-md;
+    }
+
+    .btn-primary {
+        @apply w-full text-sm text-white px-5 py-3 rounded-md;
+    }
 }
