@@ -21,4 +21,8 @@
     .btn-primary {
         @apply w-full text-sm text-white px-5 py-3 rounded-md;
     }
+
+    .icon-btn {
+        @apply text-slate-400 cursor-pointer hover:text-slate-700;
+    }
 }

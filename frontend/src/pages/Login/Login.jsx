@@ -32,7 +32,7 @@ const Login = () => {
         <div className="w-96 max-w-md p-8 border border-gray-200 bg-white rounded-md drop-shadow">
           <form onSubmit={handleLogin}>
             <div>
-              <h4 className="text-2xl mb-7">Login</h4>
+              <h4 className="text-2xl mb-7 font-medium">Login</h4>
               <input
                 type="text"
                 id="email"
