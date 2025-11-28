@@ -21,8 +21,8 @@ const NoteCard = ({
         </div>
 
         <MdOutlinePushPin
-          className={`cursor-pointer ${
-            isPinned ? "text-blue-500" : "text-slate-400"
+          className={`cursor-pointer transition-transform ${
+            isPinned ? "text-blue-500" : "text-slate-400 rotate-45"
           }`}
           onClick={onPinNote}
           size={20}
@@ -54,6 +54,7 @@ const NoteCard = ({
             className="text-slate-400 cursor-pointer hover:text-slate-700"
             size={20}
             onClick={onDelete}
+            
           />
         </div>
       </div>

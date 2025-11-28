@@ -1,28 +1,52 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
 import PasswordInput from "../../components/Navbar/Input/PasswordInput";
 import { validateEmail } from "../../utils/helper";
+import axiosInstance from "../../utils/axiosInstance";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
+  const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(email, password);
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address.");
-    }
-
-    if(!password) {
-      setError("Please enter the password.");
-    }
-
     setError("");
 
+    // Validate inputs
+    if (!validateEmail(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (!password) {
+      setError("Please enter the password.");
+      return;
+    }
+
     //Login API call
+    try {
+      const response = await axiosInstance.post("/login", {
+        email,
+        password,
+      });
+
+      if (response.data && response.data.accessToken) {
+        localStorage.setItem("token", response.data.accessToken);
+        navigate("/dashboard");
+      } else {
+        setError(response.data.message || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred while logging in. Please try again.");
+      }
+    }
   };
 
   return (
@@ -38,21 +62,25 @@ const Login = () => {
                 id="email"
                 name="email"
                 placeholder="Email"
-                className="w-full p-2 border border-gray-300 rounded-md"
+                className="w-full p-2 border border-gray-300 rounded-md mb-3"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
 
               <PasswordInput
                 value={password}
+                id="password"
+                name="password"
                 onChange={(e) => setPassword(e.target.value)}
               />
 
-              {error && <p className="text-red-500 text-sm mb-2 mt-2">{error}</p>}
+              {error && (
+                <p className="text-red-500 text-sm mb-2 mt-2">{error}</p>
+              )}
 
               <button
                 type="submit"
-                className="w-full btn-primary bg-blue-500 text-white px-4 py-2 mt-4 rounded-md"
+                className="w-full btn-primary bg-blue-500 text-white px-4 py-2 mt-4 rounded-md hover:bg-blue-600 cursor-pointer transition-colors"
               >
                 Login
               </button>
